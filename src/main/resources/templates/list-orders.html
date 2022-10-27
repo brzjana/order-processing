@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>All Orders</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+</head>
+
+<body>
+<div class="container my-2">
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Sign Out"/>
+    </form>
+    <div class="card">
+        <div class="card-body">
+            <div th:switch="${orders}" class="container my-5">
+                <p class="my-5">
+                    <a href="/edit" class="btn btn-primary">
+                        <i class="fas fa-plus ml-2"> Add Order </i></a>
+                </p>
+                <div class="col-md-10">
+                    <h2 th:case="null">No record found !!</h2>
+                    <div th:case="*">
+                        <table class="table table-striped table-responsive-md">
+                            <thead>
+                            <tr>
+                                <th>From</th>
+                                <th>To</th>
+                                <th>Dist / km</th>
+                                <th>Edit</th>
+                                <th>Start</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="order : ${orders}">
+                                <td th:text="${order.fromCity}"></td>
+                                <td th:text="${order.toCity}"></td>
+                                <td th:text="${#numbers.formatDecimal(order.distance, 0, 1)}"></td>
+                                <td>
+                                    <div th:if="${order.distance} == null">
+                                        <a th:href="@{/edit/{id}(id=${order.id})}"
+                                           class="btn btn-primary">
+                                            <i class="fas fa-edit ml-2"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div th:if="${order.distance} == null">
+                                        <a th:href="@{/start/{id}(id=${order.id})}"
+                                           class="btn btn-primary">
+                                            <i class="fas fa-check ml-2"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>
